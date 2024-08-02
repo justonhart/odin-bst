@@ -1,3 +1,47 @@
-test('demo test', () => {
-	expect(true).toBeTruthy();
+import Tree from '../src/Tree';
+
+describe('constructor testing', () => {
+	test("valid input doesn't error", () => {
+		const constMock = jest.fn(() => new Tree([1, 6, 2, 5, 2, 4, 3]));
+		constMock();
+		expect(constMock).toHaveReturned();
+	});
+
+	test('empty array input throws error', () => {
+		expect(() => new Tree([])).toThrow();
+	});
+});
+
+describe('traversal method testing', () => {
+	let myTree = new Tree([1, 6, 2, 5, 3, 4]);
+
+	// simple string and function to validate order methods
+	let testString: string;
+	const appendTestString = (val: number) => {
+		testString += val.toString();
+	};
+
+	beforeEach(() => {
+		testString = '';
+	});
+
+	test('level order test', () => {
+		myTree.levelOrder(appendTestString);
+		expect(testString).toBe('426135');
+	});
+
+	test('in order test', () => {
+		myTree.inOrder(appendTestString);
+		expect(testString).toBe('123456');
+	});
+
+	test('pre order test', () => {
+		myTree.preOrder(appendTestString);
+		expect(testString).toBe('421365');
+	});
+
+	test('post order test', () => {
+		myTree.postOrder(appendTestString);
+		expect(testString).toBe('132564');
+	});
 });
