@@ -1,4 +1,5 @@
 import Tree from '../src/Tree';
+import Node from '../src/Node';
 
 // simple string and function to validate methods
 let testString: string;
@@ -41,6 +42,22 @@ describe('traversal method testing', () => {
 	test('post order test', () => {
 		myTree.postOrder(appendTestString);
 		expect(testString).toBe('132564');
+	});
+});
+
+describe('find method testing', () => {
+	let myTree = new Tree([1, 6, 2, 5, 2, 4, 3]);
+
+	test('find existing value returns expected node', () => {
+		let foundNode = myTree.find(6);
+		const expectedNode = new Node(6);
+		expectedNode.left = new Node(5);
+		expect(foundNode).toEqual(expectedNode);
+	});
+
+	test('find non-existing value returns null', () => {
+		let foundNode = myTree.find(11);
+		expect(foundNode).toEqual(null);
 	});
 });
 

@@ -91,8 +91,22 @@ export default class Tree {
 
 	public deleteItem(value: number): void {}
 
-	public find(value: number): Node {
-		return;
+	public find(value: number): Node | null {
+		let targetNode = null;
+
+		const searchNodes = (node: Node) => {
+			console.log(`${value}: ${node.value}`);
+			if (value === node.value) {
+				targetNode = node;
+				return;
+			}
+			if (value < node.value && node.left) searchNodes(node.left);
+			if (value > node.value && node.right) searchNodes(node.right);
+		};
+
+		searchNodes(this.root);
+
+		return targetNode;
 	}
 
 	/**
