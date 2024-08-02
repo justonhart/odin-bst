@@ -24,7 +24,7 @@ export default class Tree {
 		let midpointIndex = Math.floor(arr.length / 2);
 
 		let rootNode = new Node();
-		rootNode.data = arr[midpointIndex];
+		rootNode.value = arr[midpointIndex];
 
 		if (arr.length > 1) {
 			let leftArr = arr.slice(0, midpointIndex);
@@ -51,7 +51,7 @@ export default class Tree {
 					false,
 				);
 			}
-			console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+			console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.value}`);
 			if (node.left) {
 				this.prettyPrintNode(
 					node.left,
@@ -89,7 +89,7 @@ export default class Tree {
 			if (node.right) {
 				nodesToTraverse.push(node.right);
 			}
-			callback(node.data);
+			callback(node.value);
 		};
 
 		while (nodesToTraverse.length) {
@@ -103,7 +103,7 @@ export default class Tree {
 	public inOrder(callback: Function): void {
 		const traverseNode = (node: Node) => {
 			if (node.left) traverseNode(node.left);
-			callback(node.data);
+			callback(node.value);
 			if (node.right) traverseNode(node.right);
 		};
 		traverseNode(this.root);
@@ -114,7 +114,7 @@ export default class Tree {
 	 */
 	public preOrder(callback: Function): void {
 		const traverseNode = (node: Node) => {
-			callback(node.data);
+			callback(node.value);
 			if (node.left) traverseNode(node.left);
 			if (node.right) traverseNode(node.right);
 		};
@@ -128,7 +128,7 @@ export default class Tree {
 		const traverseNode = (node: Node) => {
 			if (node.left) traverseNode(node.left);
 			if (node.right) traverseNode(node.right);
-			callback(node.data);
+			callback(node.value);
 		};
 		traverseNode(this.root);
 	}

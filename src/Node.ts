@@ -1,5 +1,5 @@
 export default class Node {
-	data: number;
+	value: number;
 	left: Node;
 	right: Node;
 }
