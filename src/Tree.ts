@@ -23,7 +23,7 @@ export default class Tree {
 		//get midpoint of array for root
 		let midpointIndex = Math.floor(arr.length / 2);
 
-		let rootNode = new Node();
+		let rootNode = new Node(arr[midpointIndex]);
 		rootNode.value = arr[midpointIndex];
 
 		if (arr.length > 1) {
@@ -69,7 +69,25 @@ export default class Tree {
 		this.prettyPrintNode(this.root);
 	}
 
-	public insert(value: number): void {}
+	public insert(value: number): void {
+		const traverseNodes = (node: Node) => {
+			if (value < node.value) {
+				if (node.left) {
+					traverseNodes(node.left);
+				} else {
+					node.left = new Node(value);
+				}
+			} else if (value > node.value) {
+				if (node.right) {
+					traverseNodes(node.right);
+				} else {
+					node.right = new Node(value);
+				}
+			}
+		};
+
+		traverseNodes(this.root);
+	}
 
 	public deleteItem(value: number): void {}
 
