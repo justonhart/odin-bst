@@ -189,3 +189,60 @@ describe('balance methods', () => {
 		expect(myTree.isBalanced()).toBe(true);
 	});
 });
+
+test('comprehensive test from project prompt', () => {
+	const getRandomArray = (length: number): number[] => {
+		let arr: number[] = [];
+		for (let i = 0; i < length; i++) {
+			arr.push(Math.floor(Math.random() * 100));
+		}
+		return arr;
+	};
+
+	let outstring = '';
+
+	const logValue = (node: Node): void => {
+		outstring += `${node.value} `;
+	};
+
+	let myTree = new Tree(getRandomArray(25));
+	expect(myTree.isBalanced()).toBe(true);
+
+	myTree.inOrder(logValue);
+	console.log('In-order: ' + outstring);
+	outstring = '';
+
+	myTree.levelOrder(logValue);
+	console.log('Level-order: ' + outstring);
+
+	myTree.preOrder(logValue);
+	console.log('Pre-order: ' + outstring);
+	outstring = '';
+
+	myTree.postOrder(logValue);
+	console.log('Post-order: ' + outstring);
+	outstring = '';
+
+	myTree.insert(105);
+	myTree.insert(120);
+	myTree.insert(211);
+
+	expect(myTree.isBalanced()).toBe(false);
+	myTree.rebalance();
+	expect(myTree.isBalanced()).toBe(true);
+
+	myTree.inOrder(logValue);
+	console.log('In-order: ' + outstring);
+	outstring = '';
+
+	myTree.levelOrder(logValue);
+	console.log('Level-order: ' + outstring);
+
+	myTree.preOrder(logValue);
+	console.log('Pre-order: ' + outstring);
+	outstring = '';
+
+	myTree.postOrder(logValue);
+	console.log('Post-order: ' + outstring);
+	outstring = '';
+});
