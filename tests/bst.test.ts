@@ -3,8 +3,8 @@ import Node from '../src/Node';
 
 // simple string and function to validate methods
 let testString: string;
-const appendTestString = (val: number) => {
-	testString += val.toString();
+const appendTestString = (node: Node) => {
+	testString += node.value.toString();
 };
 
 afterEach(() => (testString = ''));
@@ -160,5 +160,32 @@ describe('height and depth testing', () => {
 
 		depth = myTree.depth(myTree.find(6) as Node);
 		expect(depth).toBe(1);
+	});
+});
+
+describe('balance methods', () => {
+	test('isBalanced returns true on balanced tree', () => {
+		let myTree = new Tree([5]);
+		expect(myTree.isBalanced()).toBe(true);
+
+		myTree.insert(2);
+		myTree.insert(7);
+		expect(myTree.isBalanced()).toBe(true);
+	});
+
+	test('isBalanced returns false on unbalanced tree', () => {
+		let myTree = new Tree([5]);
+		myTree.insert(2);
+		myTree.insert(1);
+		expect(myTree.isBalanced()).toBe(false);
+	});
+
+	test('rebalance restructures tree to be balanced', () => {
+		let myTree = new Tree([5]);
+		myTree.insert(2);
+		myTree.insert(1);
+		expect(myTree.isBalanced()).toBe(false);
+		myTree.rebalance();
+		expect(myTree.isBalanced()).toBe(true);
 	});
 });

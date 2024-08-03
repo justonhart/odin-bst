@@ -18,7 +18,7 @@ export default class Tree {
 
 		//remove duplicates and sort
 		arr = Array.from(new Set(arr));
-		arr.sort();
+		arr.sort((a, b) => a - b);
 
 		//get midpoint of array for root
 		let midpointIndex = Math.floor(arr.length / 2);
@@ -206,7 +206,7 @@ export default class Tree {
 			if (node.right) {
 				nodesToTraverse.push(node.right);
 			}
-			callback(node.value);
+			callback(node);
 		};
 
 		while (nodesToTraverse.length) {
@@ -221,7 +221,7 @@ export default class Tree {
 		if (this.root === null) return null;
 		const traverseNode = (node: Node) => {
 			if (node.left) traverseNode(node.left);
-			callback(node.value);
+			callback(node);
 			if (node.right) traverseNode(node.right);
 		};
 		traverseNode(this.root);
@@ -233,7 +233,7 @@ export default class Tree {
 	public preOrder(callback: Function): void {
 		if (this.root === null) return null;
 		const traverseNode = (node: Node) => {
-			callback(node.value);
+			callback(node);
 			if (node.left) traverseNode(node.left);
 			if (node.right) traverseNode(node.right);
 		};
@@ -248,7 +248,7 @@ export default class Tree {
 		const traverseNode = (node: Node) => {
 			if (node.left) traverseNode(node.left);
 			if (node.right) traverseNode(node.right);
-			callback(node.value);
+			callback(node);
 		};
 		traverseNode(this.root);
 	}
@@ -285,8 +285,26 @@ export default class Tree {
 	}
 
 	public isBalanced(): boolean {
-		return;
+		if (!this.root) return true;
+
+		let booleanArray = [];
+		const balanceCheck = (node: Node) => {
+			booleanArray.push(
+				Math.abs(
+					(node.left ? 1 + Tree.height(node.left) : 0) -
+						(node.right ? 1 + Tree.height(node.right) : 0),
+				) < 2,
+			);
+		};
+		this.levelOrder(balanceCheck);
+		return booleanArray.reduce((all, next) => all && next, true);
 	}
 
-	public rebalance(): void {}
+	public rebalance(): void {
+		const values = [];
+		this.inOrder((node: Node) => {
+			values.push(node.value);
+		});
+		this.root = new Tree(values).root;
+	}
 }
