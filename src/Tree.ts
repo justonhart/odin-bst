@@ -253,6 +253,37 @@ export default class Tree {
 		traverseNode(this.root);
 	}
 
+	public static height(node: Node): number {
+		return Math.max(
+			node.left ? 1 + this.height(node.left) : 0,
+			node.right ? 1 + this.height(node.right) : 0,
+		);
+	}
+
+	public depth(node: Node): number | null {
+		let currentDepth = 0;
+		let currentNode = this.root;
+		while (currentNode) {
+			if (node.value < currentNode.value) {
+				if (currentNode.left) {
+					currentDepth++;
+					currentNode = currentNode.left;
+				} else {
+					return null;
+				}
+			} else if (node.value > currentNode.value) {
+				if (currentNode.right) {
+					currentDepth++;
+					currentNode = currentNode.right;
+				} else {
+					return null;
+				}
+			} else {
+				return currentDepth;
+			}
+		}
+	}
+
 	public isBalanced(): boolean {
 		return;
 	}

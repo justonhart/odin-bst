@@ -125,3 +125,40 @@ describe('mutation method testing', () => {
 		expect(testString).toBe('521');
 	});
 });
+
+describe('height and depth testing', () => {
+	let myTree: Tree;
+
+	beforeEach(() => {
+		myTree = new Tree([4, 2, 6, 2, 5, 2, 1, 3]);
+	});
+
+	test('height of leaf is 0', () => {
+		let height = Tree.height(myTree.find(1) as Node);
+		expect(height).toBe(0);
+
+		height = Tree.height(myTree.find(5) as Node);
+		expect(height).toBe(0);
+	});
+
+	test('height returns highest number of edges between children nodes', () => {
+		let height = Tree.height(myTree.find(4) as Node);
+		expect(height).toBe(2);
+
+		height = Tree.height(myTree.find(6) as Node);
+		expect(height).toBe(1);
+	});
+
+	test('depth of root is 0', () => {
+		let depth = myTree.depth(myTree.find(4) as Node);
+		expect(depth).toBe(0);
+	});
+
+	test('depth returns number of edges between node with given value and root', () => {
+		let depth = myTree.depth(myTree.find(1) as Node);
+		expect(depth).toBe(2);
+
+		depth = myTree.depth(myTree.find(6) as Node);
+		expect(depth).toBe(1);
+	});
+});
