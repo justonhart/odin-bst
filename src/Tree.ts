@@ -89,13 +89,97 @@ export default class Tree {
 		traverseNodes(this.root);
 	}
 
-	public deleteItem(value: number): void {}
+	public deleteItem(value: number): void {
+		let parentNode: Node = null;
+		let currentNodeIsLeftChild = false;
+		let currentNode = this.root;
+		while (true) {
+			if (value < currentNode.value) {
+				if (currentNode.left) {
+					parentNode = currentNode;
+					currentNodeIsLeftChild = true;
+					currentNode = currentNode.left;
+				} else {
+					//if there are no more children, return;
+					return;
+				}
+			} else if (value > currentNode.value) {
+				if (currentNode.right) {
+					parentNode = currentNode;
+					currentNodeIsLeftChild = false;
+					currentNode = currentNode.right;
+				} else {
+					return;
+				}
+			} else {
+				//we have found target node; handle delete cases
+				//if node has no children, just remove reference from parent
+				if (!currentNode.left && !currentNode.right) {
+					if (parentNode === null) {
+						this.root = null;
+						return;
+					}
+					if (currentNodeIsLeftChild) {
+						parentNode.left = null;
+						return;
+					} else {
+						parentNode.right = null;
+						return;
+					}
+				}
+
+				//if node only has one child, replace node reference on parent with child
+				else if (currentNode.left && !currentNode.right) {
+					if (parentNode === null) {
+						this.root = currentNode.left;
+						return;
+					}
+					if (currentNodeIsLeftChild) {
+						parentNode.left = currentNode.left;
+						return;
+					} else {
+						parentNode.right = currentNode.left;
+						return;
+					}
+				} else if (!currentNode.left && currentNode.right) {
+					if (parentNode === null) {
+						this.root = currentNode.right;
+						return;
+					}
+					if (currentNodeIsLeftChild) {
+						parentNode.left = currentNode.right;
+						return;
+					} else {
+						parentNode.right = currentNode.right;
+						return;
+					}
+				}
+
+				//if node has two children, find the next in-order value among them and replace the current node's value with it, then delete that node
+				else {
+					let currentChild = currentNode.right;
+
+					if (currentChild.left) {
+						while (currentChild.left.left) {
+							currentChild = currentChild.left;
+						}
+
+						currentNode.value = currentChild.left.value;
+						currentChild.left = null;
+					} else {
+						currentNode.value = currentChild.value;
+						currentNode.right = null;
+					}
+					return;
+				}
+			}
+		}
+	}
 
 	public find(value: number): Node | null {
 		let targetNode = null;
 
 		const searchNodes = (node: Node) => {
-			console.log(`${value}: ${node.value}`);
 			if (value === node.value) {
 				targetNode = node;
 				return;
@@ -113,6 +197,7 @@ export default class Tree {
 	 * Execute a callback function on tree values using level-order traversal
 	 */
 	public levelOrder(callback: Function): void {
+		if (this.root === null) return null;
 		const nodesToTraverse = [this.root];
 		const traverseNode = (node: Node) => {
 			if (node.left) {
@@ -133,6 +218,7 @@ export default class Tree {
 	 * Execute a callback function on tree values using in-order traversal
 	 */
 	public inOrder(callback: Function): void {
+		if (this.root === null) return null;
 		const traverseNode = (node: Node) => {
 			if (node.left) traverseNode(node.left);
 			callback(node.value);
@@ -145,6 +231,7 @@ export default class Tree {
 	 * Execute a callback function on tree values using pre-order traversal
 	 */
 	public preOrder(callback: Function): void {
+		if (this.root === null) return null;
 		const traverseNode = (node: Node) => {
 			callback(node.value);
 			if (node.left) traverseNode(node.left);
@@ -157,6 +244,7 @@ export default class Tree {
 	 * Execute a callback function on tree values using post-order traversal
 	 */
 	public postOrder(callback: Function): void {
+		if (this.root === null) return null;
 		const traverseNode = (node: Node) => {
 			if (node.left) traverseNode(node.left);
 			if (node.right) traverseNode(node.right);

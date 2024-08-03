@@ -80,4 +80,48 @@ describe('mutation method testing', () => {
 		myTree.inOrder(appendTestString);
 		expect(testString).toBe('012345689');
 	});
+
+	test('delete leaf value only removes that value', () => {
+		myTree.deleteItem(5);
+		myTree.levelOrder(appendTestString);
+		expect(testString).toBe('42613');
+
+		testString = '';
+		myTree.deleteItem(6);
+		myTree.levelOrder(appendTestString);
+		expect(testString).toBe('4213');
+	});
+
+	test('delete root value moves next in-order value as expected', () => {
+		myTree.deleteItem(4);
+		myTree.levelOrder(appendTestString);
+		expect(testString).toBe('52613');
+
+		testString = '';
+		myTree.deleteItem(2);
+		myTree.levelOrder(appendTestString);
+		expect(testString).toBe('5361');
+	});
+
+	test('delete value with one child moves child', () => {
+		myTree.deleteItem(6);
+		myTree.levelOrder(appendTestString);
+		expect(testString).toBe('42513');
+	});
+
+	test('delete single node tree value works', () => {
+		let mySmallTree = new Tree([4]);
+		mySmallTree.deleteItem(4);
+		mySmallTree.levelOrder(appendTestString);
+		expect(testString).toBe('');
+	});
+
+	test('comprehensive delete test', () => {
+		myTree.deleteItem(6);
+		myTree.deleteItem(3);
+		myTree.deleteItem(4);
+
+		myTree.levelOrder(appendTestString);
+		expect(testString).toBe('521');
+	});
 });
